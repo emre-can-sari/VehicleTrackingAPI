@@ -27,6 +27,8 @@ public class JourneyService
         };
 
         _context.Journeys.Add(journey);
+        var driver = _context.Drivers.Find(journey.DriverId);
+        driver.Journeys.Add(journey);
         _context.SaveChanges();
     }
 
@@ -65,6 +67,8 @@ public class JourneyService
         var journey = _context.Journeys.Find(id);
         if (journey != null)
         {
+            var driver = _context.Drivers.Find(journey.DriverId);
+            driver.Journeys.Remove(journey);
             _context.Journeys.Remove(journey);
             _context.SaveChanges();
         }

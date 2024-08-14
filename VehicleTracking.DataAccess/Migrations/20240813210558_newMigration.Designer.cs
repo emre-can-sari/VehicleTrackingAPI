@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleTracking.DataAccess;
 
@@ -10,9 +11,11 @@ using VehicleTracking.DataAccess;
 namespace VehicleTracking.DataAccess.Migrations
 {
     [DbContext(typeof(VehicleTrackingDbContext))]
-    partial class VehicleTrackingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240813210558_newMigration")]
+    partial class newMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -63,8 +66,6 @@ namespace VehicleTracking.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverId");
-
                     b.ToTable("Journeys");
                 });
 
@@ -78,12 +79,13 @@ namespace VehicleTracking.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("isAdmin")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -107,20 +109,6 @@ namespace VehicleTracking.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("VehicleTracking.Entities.Entities.Journey", b =>
-                {
-                    b.HasOne("VehicleTracking.Entities.Entities.Driver", null)
-                        .WithMany("Journeys")
-                        .HasForeignKey("DriverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("VehicleTracking.Entities.Entities.Driver", b =>
-                {
-                    b.Navigation("Journeys");
                 });
 #pragma warning restore 612, 618
         }

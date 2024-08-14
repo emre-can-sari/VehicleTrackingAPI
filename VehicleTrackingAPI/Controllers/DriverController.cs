@@ -17,20 +17,15 @@ namespace VehicleTracking.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateDriver([FromBody] DtoDriver dtoDriver)
+        public IActionResult CreateDriver([FromBody] DtoCreatedDriver dtoDriver)
         {
             if (dtoDriver == null)
             {
                 return BadRequest("Driver data is required.");
             }
 
-            var driver = new Driver
-            {
-                Name = dtoDriver.Name,
-                LicenseNumber = dtoDriver.LicenseNumber
-            };
 
-            _driverService.CreateDriver(driver);
+            var driver = _driverService.CreateDriver(dtoDriver);
 
             var createdDriver = _driverService.GetDriverById(driver.Id);
 
@@ -45,12 +40,12 @@ namespace VehicleTracking.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetDriverById(int id)
         {
-            var dtoDriver = _driverService.GetDriverById(id);
-            if (dtoDriver == null)
+            var driver = _driverService.GetDriverById(id);
+            if (driver == null)
             {
                 return NotFound();
             }
-            return Ok(dtoDriver);
+            return Ok(driver);
         }
 
         [HttpGet]
